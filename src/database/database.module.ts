@@ -4,7 +4,7 @@ import { Pool } from "pg";
 
 import env from "@/env";
 
-import * as exampleSchema from "../examples/schema";
+import * as usersSchema from "../users/schema";
 import { DATABASE_CONNECTION } from "./database-connection";
 
 @Global()
@@ -16,7 +16,7 @@ import { DATABASE_CONNECTION } from "./database-connection";
         connectionString: env.DATABASE_URL,
       }), {
         schema: {
-          ...exampleSchema,
+          ...usersSchema,
         },
       }),
     },
