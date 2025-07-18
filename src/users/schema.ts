@@ -21,7 +21,14 @@ const createUsersSchema = createInsertSchema(
   {
     name: schema => schema.min(1).max(100).describe("The name of the user"),
     email: schema => schema.min(1).max(500).describe("The email of the user"),
-    password: schema => schema.min(8).describe("The password of the user"),
+    password: schema =>
+      schema
+        .min(6, "Password must be at least 6 characters")
+        .regex(
+          /^(?=.*[a-z])(?=.*[A-Z])(?=.*[^A-Za-z0-9])/, // at least one lowercase, one uppercase, one special
+          "Password must contain at least one lowercase letter, one uppercase letter, and one special character",
+        )
+        .describe("The password of the user"),
   },
 ).required({
   name: true,
