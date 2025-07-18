@@ -8,6 +8,13 @@
       "when": 1752816015354,
       "tag": "0000_bent_iceman",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1752859632244,
+      "tag": "0001_illegal_redwing",
+      "breakpoints": true
     }
   ]
 }
