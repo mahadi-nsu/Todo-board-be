@@ -6,6 +6,7 @@ import env from "@/env";
 
 import * as categoriesSchema from "../categories/schema";
 import * as labelsSchema from "../labels/schema";
+import * as ticketsSchema from "../tickets/schema";
 import * as usersSchema from "../users/schema";
 import { DATABASE_CONNECTION } from "./database-connection";
 
@@ -21,7 +22,7 @@ import { DATABASE_CONNECTION } from "./database-connection";
           ...usersSchema,
           ...categoriesSchema,
           ...labelsSchema,
-
+          ...ticketsSchema,
         },
       }),
     },
