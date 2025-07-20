@@ -43,6 +43,13 @@
       "when": 1752995189028,
       "tag": "0005_amusing_fixer",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1752999975678,
+      "tag": "0006_spicy_marauders",
+      "breakpoints": true
     }
   ]
 }
