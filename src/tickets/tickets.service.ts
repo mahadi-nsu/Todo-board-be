@@ -197,7 +197,9 @@ export class TicketsService {
 
   async bulkUpdateCategory(oldCategoryId: string, newCategoryId: string, tx: NodePgTransaction<any, any>) {
     const updatedRows = await tx.update(schema.tickets).set({ categoryId: Number(newCategoryId) }).where(eq(schema.tickets.categoryId, Number(oldCategoryId))).returning({ id: schema.tickets.id });
-    await tx.insert(schema.ticketsToCategoriesHistory).values(updatedRows.map(row => ({ ticketId: row.id, categoryId: Number(newCategoryId) })));
+    if (updatedRows.length > 0) {
+      await tx.insert(schema.ticketsToCategoriesHistory).values(updatedRows.map(row => ({ ticketId: row.id, categoryId: Number(newCategoryId) })));
+    }
   }
 
   async delete(id: string) {
