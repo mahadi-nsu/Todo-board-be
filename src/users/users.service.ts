@@ -1,4 +1,4 @@
-import { Inject, Injectable, NotFoundException } from "@nestjs/common";
+import { BadRequestException, Inject, Injectable, NotFoundException } from "@nestjs/common";
 import * as bcrypt from "bcrypt";
 import { NodePgDatabase } from "drizzle-orm/node-postgres";
 import { sha256 } from "js-sha256";
@@ -14,6 +14,13 @@ export class UsersService {
   ) {}
 
   async create(data: schema.CreateUsersDto): Promise<schema.UserWithoutPassword> {
+    // Check for existing user by email
+    const existingUser = await this.db.query.users.findFirst({
+      where: (users, { eq }) => eq(users.email, data.email),
+    });
+    if (existingUser) {
+      throw new BadRequestException("User already registered with this email");
+    }
     const salt = await bcrypt.genSalt(10);
     const hash = await bcrypt.hash(sha256(data.password), salt);
     const [insertedRow] = await this.db.insert(schema.users).values({
