@@ -3,6 +3,7 @@ import { eq, or, sql } from "drizzle-orm";
 import { NodePgDatabase } from "drizzle-orm/node-postgres";
 
 import { DATABASE_CONNECTION } from "../database/database-connection";
+import { tickets } from "../tickets/schema";
 import { TicketsService } from "../tickets/tickets.service";
 import * as schema from "./schema";
 
@@ -100,18 +101,20 @@ export class CategoriesService {
     });
   }
 
-  async delete(id: string, moveExistingTicketsToCategoryId: string) {
-    // check if both of the category exists
-    const categories = await this.db.query.categories.findMany({
-      where: (categories, { eq, or }) => or(eq(categories.id, Number(id)), eq(categories.id, Number(moveExistingTicketsToCategoryId))),
-    });
-
-    if (categories.length !== 2) {
-      throw new NotFoundException("Category not found");
-    }
+  async delete(id: string, moveExistingTicketsToCategoryId?: string) {
+    // Always check if the category to delete exists
+    await this.getById(id);
 
     await this.db.transaction(async (tx) => {
-      await this.ticketsService.bulkUpdateCategory(id, moveExistingTicketsToCategoryId, tx);
+      if (moveExistingTicketsToCategoryId) {
+        // Check if the target category exists
+        await this.getById(moveExistingTicketsToCategoryId);
+        await this.ticketsService.bulkUpdateCategory(id, moveExistingTicketsToCategoryId, tx);
+      }
+      else {
+        // Delete all tickets in this category
+        await tx.delete(tickets).where(eq(tickets.categoryId, Number(id)));
+      }
       await tx.delete(schema.categories).where(eq(schema.categories.id, Number(id)));
     });
   }
