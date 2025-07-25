@@ -18,7 +18,14 @@ export class TicketsService {
   ) {}
 
   async create(data: schema.InsertTicketsDto) {
+    // Insert the ticket
     const [insertedRow] = await this.db.insert(schema.tickets).values(data).returning();
+
+    // Insert the initial category into the history
+    await this.db.insert(schema.ticketsToCategoriesHistory).values({
+      ticketId: insertedRow.id,
+      categoryId: insertedRow.categoryId,
+    });
 
     return insertedRow;
   }

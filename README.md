@@ -2,20 +2,25 @@
 
 ## How to Run This Project
 
-1. Create a `.env` file in the project root. (copy `.env.example` file content and paste to .env)
-2. Start the database:
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/mahadi-nsu/Todo-board-be.git
+   cd Todo-board-be
+   ```
+2. Create a `.env` file in the project root. (copy `.env.example` file content and paste to .env)
+3. Start the database:
    ```bash
    docker compose up
    ```
-3. Install dependencies:
+4. Install dependencies:
    ```bash
    npm install
    ```
-4. Run database migrations:
+5. Run database migrations:
    ```bash
    npm run db:migrate
    ```
-5. Start the development server:
+6. Start the development server:
    ```bash
    npm run dev
    ```
