@@ -7,7 +7,12 @@
    git clone https://github.com/mahadi-nsu/Todo-board-be.git
    cd Todo-board-be
    ```
-2. Create a `.env` file in the project root. (copy `.env.example` file content and paste to .env)
+2. Copy environment variables:
+
+   ```sh
+   cp .env.example .env
+   ```
+
 3. Start the database:
    ```bash
    docker compose up
